@@ -5,62 +5,60 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace PraktikPortalWebApi.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class InitialP : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "product",
+                name: "student",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
-                    brand = table.Column<string>(type: "text", nullable: false),
-                    size = table.Column<int>(type: "integer", nullable: false),
-                    price = table.Column<decimal>(type: "numeric", nullable: false)
+                    username = table.Column<string>(type: "text", nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_product", x => x.id);
+                    table.PrimaryKey("PK_student", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "order",
+                name: "internship",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
+                    InternshipId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    product_id = table.Column<int>(type: "integer", nullable: false),
-                    Productid = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    address = table.Column<string>(type: "text", nullable: false),
-                    phone = table.Column<string>(type: "text", nullable: false)
+                    InternshipName = table.Column<string>(type: "text", nullable: false),
+                    InternshipCompany = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Studentid = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order", x => x.id);
+                    table.PrimaryKey("PK_internship", x => x.InternshipId);
                     table.ForeignKey(
-                        name: "FK_order_product_Productid",
-                        column: x => x.Productid,
-                        principalTable: "product",
+                        name: "FK_internship_student_Studentid",
+                        column: x => x.Studentid,
+                        principalTable: "student",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_Productid",
-                table: "order",
-                column: "Productid");
+                name: "IX_internship_Studentid",
+                table: "internship",
+                column: "Studentid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "order");
+                name: "internship");
 
             migrationBuilder.DropTable(
-                name: "product");
+                name: "student");
         }
     }
 }

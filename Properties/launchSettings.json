@@ -13,7 +13,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "api/students",
+      "launchUrl": "api/internships",
       "applicationUrl": "https://localhost:5287;http://localhost:7287",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

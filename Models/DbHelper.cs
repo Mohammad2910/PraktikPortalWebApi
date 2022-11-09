@@ -9,7 +9,7 @@ namespace PraktikPortalWebApi.Models
         {
             _context = context;
         }
-        // GET
+        // GET students
         public List<StudentModel> GetStudents()
         {
             List<StudentModel> response = new List<StudentModel>();
@@ -24,6 +24,7 @@ namespace PraktikPortalWebApi.Models
             return response;
         }
 
+        // GET student
         public StudentModel GetStudentById(int id)
         {
             StudentModel response = new StudentModel();
@@ -43,6 +44,12 @@ namespace PraktikPortalWebApi.Models
         {
             List<InternshipModel> response = new List<InternshipModel>();
             var dataList = _context.Internships.ToList();
+            System.Diagnostics.Debug.WriteLine("!!!!!!!!!!");
+            foreach (var internship in dataList)
+            {
+                System.Diagnostics.Debug.WriteLine(internship.InternshipName, internship.Student.name);
+            }
+            System.Diagnostics.Debug.WriteLine("!!!!!!!!!!");
             dataList.ForEach(row => response.Add(new InternshipModel()
             {
                 InternshipId = row.InternshipId,
@@ -63,7 +70,8 @@ namespace PraktikPortalWebApi.Models
                 InternshipId = row.InternshipId,
                 InternshipName = row.InternshipName,
                 InternshipCompany = row.InternshipCompany,
-                Status = row.Status
+                Status = row.Status,
+                StudentId = row.Student.id
             };
         }
 

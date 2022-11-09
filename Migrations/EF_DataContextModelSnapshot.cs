@@ -41,66 +41,14 @@ namespace PraktikPortalWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Studentid")
+                        .HasColumnType("integer");
+
                     b.HasKey("InternshipId");
 
+                    b.HasIndex("Studentid");
+
                     b.ToTable("internship");
-                });
-
-            modelBuilder.Entity("PraktikPortalWebApi.EfCore.Order", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<int>("Productid")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("Productid");
-
-                    b.ToTable("order");
-                });
-
-            modelBuilder.Entity("PraktikPortalWebApi.EfCore.Product", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("brand")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("price")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("size")
-                        .HasColumnType("integer");
-
-                    b.HasKey("id");
-
-                    b.ToTable("product");
                 });
 
             modelBuilder.Entity("PraktikPortalWebApi.EfCore.Student", b =>
@@ -128,15 +76,15 @@ namespace PraktikPortalWebApi.Migrations
                     b.ToTable("student");
                 });
 
-            modelBuilder.Entity("PraktikPortalWebApi.EfCore.Order", b =>
+            modelBuilder.Entity("PraktikPortalWebApi.EfCore.Internship", b =>
                 {
-                    b.HasOne("PraktikPortalWebApi.EfCore.Product", "Product")
+                    b.HasOne("PraktikPortalWebApi.EfCore.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("Productid")
+                        .HasForeignKey("Studentid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Student");
                 });
 #pragma warning restore 612, 618
         }
