@@ -11,7 +11,8 @@ namespace PraktikPortalWebApi.EfCore
         public string InternshipName { get; set; } = string.Empty;
         public string InternshipCompany { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
-
-        public virtual Student Student { get; set; }
+        public int student_id { get; set; }
+        [ForeignKey("student_id")]
+        public virtual Student Student { get; set; } = null!;
     }
 }

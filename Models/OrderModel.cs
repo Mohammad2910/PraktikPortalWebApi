@@ -1,6 +1,4 @@
-﻿using PraktikPortalWebApi.EfCore;
-
-namespace PraktikPortalWebApi.Models
+﻿namespace PraktikPortalWebApi.Models
 {
     public class OrderModel
     {

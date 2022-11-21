@@ -7,6 +7,6 @@
         public string InternshipCompany { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
 
-        public int StudentId { get; set; }
+        public int student_id { get; set; }
     }
 }
