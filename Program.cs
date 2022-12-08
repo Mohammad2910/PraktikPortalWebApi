@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PraktikPortalWebApi;
 using PraktikPortalWebApi.EfCore;
 using PraktikPortalWebApi.Models;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<EF_DataContext>(
                 o => o.UseNpgsql(builder.Configuration.GetConnectionString("Ef_Postgres_Db"))
             );
+builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 builder.Services.AddControllers();
 //builder.Services.AddSwaggerGen(c =>
 //{

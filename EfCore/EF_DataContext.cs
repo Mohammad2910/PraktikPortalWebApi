@@ -6,7 +6,7 @@ namespace PraktikPortalWebApi.EfCore
     {
         public EF_DataContext(DbContextOptions<EF_DataContext> options) : base(options) { }
 
-        public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Internship> Internships { get; set; }
     }
 }

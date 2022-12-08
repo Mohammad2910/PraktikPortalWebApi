@@ -11,8 +11,8 @@ using PraktikPortalWebApi.EfCore;
 namespace PraktikPortalWebApi.Migrations
 {
     [DbContext(typeof(EF_DataContext))]
-    [Migration("20221109150002_InitialP")]
-    partial class InitialP
+    [Migration("20221207155334_user_ids")]
+    partial class user_ids
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,12 @@ namespace PraktikPortalWebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InternshipId"));
 
+                    b.Property<int>("CompanySupervisor_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DTUSupervisor_id")
+                        .HasColumnType("integer");
+
                     b.Property<string>("InternshipCompany")
                         .IsRequired()
                         .HasColumnType("text");
@@ -43,23 +49,31 @@ namespace PraktikPortalWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Studentid")
+                    b.Property<int>("user_id")
                         .HasColumnType("integer");
 
                     b.HasKey("InternshipId");
 
-                    b.HasIndex("Studentid");
+                    b.HasIndex("CompanySupervisor_id");
+
+                    b.HasIndex("DTUSupervisor_id");
+
+                    b.HasIndex("user_id");
 
                     b.ToTable("internship");
                 });
 
-            modelBuilder.Entity("PraktikPortalWebApi.EfCore.Student", b =>
+            modelBuilder.Entity("PraktikPortalWebApi.EfCore.User", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -69,24 +83,43 @@ namespace PraktikPortalWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("type")
+                        .HasColumnType("integer");
+
                     b.Property<string>("username")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("id");
 
-                    b.ToTable("student");
+                    b.ToTable("user");
                 });
 
             modelBuilder.Entity("PraktikPortalWebApi.EfCore.Internship", b =>
                 {
-                    b.HasOne("PraktikPortalWebApi.EfCore.Student", "Student")
+                    b.HasOne("PraktikPortalWebApi.EfCore.User", "CompanyUser")
                         .WithMany()
-                        .HasForeignKey("Studentid")
+                        .HasForeignKey("CompanySupervisor_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Student");
+                    b.HasOne("PraktikPortalWebApi.EfCore.User", "DTUUser")
+                        .WithMany()
+                        .HasForeignKey("DTUSupervisor_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PraktikPortalWebApi.EfCore.User", "User")
+                        .WithMany()
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyUser");
+
+                    b.Navigation("DTUUser");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

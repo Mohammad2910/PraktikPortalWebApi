@@ -9,34 +9,53 @@ namespace PraktikPortalWebApi.Models
         {
             _context = context;
         }
-        // GET students
-        public List<StudentModel> GetStudents()
+        // GET users
+        public List<UserModel> GetUsers()
         {
-            List<StudentModel> response = new List<StudentModel>();
-            var dataList = _context.Students.ToList();
-            dataList.ForEach(row => response.Add(new StudentModel()
+            List<UserModel> response = new List<UserModel>();
+            var dataList = _context.Users.ToList();
+            dataList.ForEach(row => response.Add(new UserModel()
             {
                 id = row.id,
                 name = row.name,
                 username = row.username,
-                password = row.password
+                password = row.password,
+                email = row.email,
+                type = row.type
             }));
             return response;
         }
 
-        // GET student
-        public StudentModel GetStudentById(int id)
+        // GET user
+        public UserModel GetUserById(int id)
         {
-            StudentModel response = new StudentModel();
-            var row = _context.Students.Where(s => s.id.Equals(id)).FirstOrDefault();
-            return new StudentModel()
+            UserModel response = new UserModel();
+            var row = _context.Users.Where(s => s.id.Equals(id)).FirstOrDefault();
+            return new UserModel()
             {
                 id = row.id,
                 name = row.name,
                 username = row.username,
-                password = row.password
+                password = row.password,
+                email = row.email,
+                type = row.type
             };
           
+        }
+
+        public UserModel GetUserByUsername(string username)
+        {
+            UserModel response = new UserModel();
+            var row = _context.Users.Where(s => s.username.Equals(username)).FirstOrDefault();
+            return new UserModel()
+            {
+                id = row.id,
+                name = row.name,
+                username = row.username,
+                password = row.password,
+                email = row.email,
+                type = row.type
+            };
         }
 
         // GET internships
@@ -50,12 +69,14 @@ namespace PraktikPortalWebApi.Models
                 InternshipName = row.InternshipName,
                 InternshipCompany = row.InternshipCompany,
                 Status = row.Status,
-                student_id = row.student_id
+                user_id = row.user_id,
+                DTUSupervisor_id = row.DTUSupervisor_id,
+                CompanySupervisor_id = row.CompanySupervisor_id
             }));
             return response;
         }
 
-        // GET internship
+        // GET internship by internship id
         public InternshipModel GetInternshipById(int id)
         {
             InternshipModel response = new InternshipModel();
@@ -65,37 +86,76 @@ namespace PraktikPortalWebApi.Models
                 InternshipId = row.InternshipId,
                 InternshipName = row.InternshipName,
                 InternshipCompany = row.InternshipCompany,
-                Status = row.Status
+                Status = row.Status,
+                user_id = row.user_id,
+                DTUSupervisor_id = row.DTUSupervisor_id,
+                CompanySupervisor_id = row.CompanySupervisor_id
             };
+        }
+
+        // GET internship by user id and user id type
+        public List<InternshipModel> GetInternshipByUserIdAndIdType(int id, string user_type)
+        {
+            List<InternshipModel> response = new List<InternshipModel>();
+            // var dataList = _context.Internships.ToList();
+            List<Internship> dataList = null;
+            if (user_type.Equals("user_id"))
+            {
+                dataList = _context.Internships.Where(s => s.user_id.Equals(id)).ToList();
+            } else if (user_type.Equals("DTUSupervisor_id"))
+            {
+                dataList = _context.Internships.Where(s => s.DTUSupervisor_id.Equals(id)).ToList();
+            } else if (user_type.Equals("CompanySupervisor_id"))
+            {
+                dataList = _context.Internships.Where(s => s.CompanySupervisor_id.Equals(id)).ToList();
+            }
+
+            dataList.ForEach(row => response.Add(new InternshipModel()
+            {
+                InternshipId = row.InternshipId,
+                InternshipName = row.InternshipName,
+                InternshipCompany = row.InternshipCompany,
+                Status = row.Status,
+                user_id = row.user_id,
+                DTUSupervisor_id = row.DTUSupervisor_id,
+                CompanySupervisor_id = row.CompanySupervisor_id
+            }));
+            return response;
         }
 
         /// <summary>
         /// it servers the post/put/patch
         /// </summary>
-        //public void saveorder(ordermodel ordermodel)
-        //{
-        //    order dbtable = new order();
-        //    if (ordermodel.id > 0)
-        //    {
-        //        put
-        //       dbtable = _context.orders.where(d => d.id.equals(ordermodel.id)).firstordefault();
-        //        if (dbtable != null)
-        //        {
-        //            dbtable.phone = ordermodel.phone;
-        //            dbtable.address = ordermodel.address;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        post
-        //        dbtable.phone = ordermodel.phone;
-        //        dbtable.address = ordermodel.address;
-        //        dbtable.name = ordermodel.name;
-        //        dbtable.product = _context.products.where(f => f.id.equals(ordermodel.product_id)).firstordefault();
-        //        _context.orders.add(dbtable);
-        //    }
-        //    _context.savechanges();
-        //}
+        public void saveUser(UserModel user)
+        {
+            User userTable = new User();
+            System.Diagnostics.Debug.WriteLine("!!!!!!!!!!!!!!!!!!");
+            System.Diagnostics.Debug.WriteLine(user.id);
+            System.Diagnostics.Debug.WriteLine(user.id);
+            if (user.id > 0)
+            {
+                // PUT
+                userTable = _context.Users.Where(d => d.id.Equals(user.id)).FirstOrDefault();
+                if (userTable != null)
+                {
+                    userTable.name = user.name;
+                    userTable.username = user.username;
+                    userTable.password = user.password;
+                    userTable.email = user.email;
+                }
+            }
+            else
+            {
+                // POST
+                userTable.name = user.name;
+                userTable.username = user.username;
+                userTable.password = user.password;
+                userTable.email = user.email;
+                userTable.type = user.type;
+                _context.Users.Add(userTable);
+            }
+            _context.SaveChanges();
+        }
 
         //public void DeleteOrder(int id)
         //{
