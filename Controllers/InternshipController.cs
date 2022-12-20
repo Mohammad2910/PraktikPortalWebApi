@@ -69,5 +69,20 @@ namespace PraktikPortalWebApi.Controllers
             }
             return Ok();
         }
+
+        // POST: api/internships
+        [HttpPost]
+        [Route("internships")]
+        public IActionResult CreateInternship(InternshipModel internship)
+        {
+            try
+            {
+                _dbHelper.saveInternship(internship);
+                return Ok();
+            }  catch (Exception e)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(e));
+            }
+        }
     }
 }

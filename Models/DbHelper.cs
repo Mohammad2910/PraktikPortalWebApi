@@ -157,6 +157,41 @@ namespace PraktikPortalWebApi.Models
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// it servers the post/put/patch
+        /// </summary>
+        public void saveInternship(InternshipModel internship)
+        {
+            Internship internshipTable = new Internship();
+            if (internship.InternshipId > 0)
+            {
+                // PUT
+                internshipTable = _context.Internships.Where(d => d.InternshipId.Equals(internship.InternshipId)).FirstOrDefault();
+                if (internshipTable != null)
+                {
+                    internshipTable.InternshipName = internship.InternshipName;
+                    internshipTable.InternshipCompany = internship.InternshipCompany;
+                    internshipTable.Status = internship.Status;
+                    internshipTable.user_id = internship.user_id;
+                    internshipTable.DTUSupervisor_id = internship.DTUSupervisor_id;
+                    internshipTable.CompanySupervisor_id = internship.CompanySupervisor_id;
+                }
+            }
+            else
+            {
+                // POST
+                
+                internshipTable.InternshipName = internship.InternshipName;
+                internshipTable.InternshipCompany = internship.InternshipCompany;
+                internshipTable.Status = internship.Status;
+                internshipTable.user_id = internship.user_id;
+                internshipTable.DTUSupervisor_id = internship.DTUSupervisor_id;
+                internshipTable.CompanySupervisor_id = internship.CompanySupervisor_id;
+                _context.Internships.Add(internshipTable);
+            }
+            _context.SaveChanges();
+        }
+
         //public void DeleteOrder(int id)
         //{
         //    var order = _context.Orders.Where(d => d.id == id).FirstOrDefault();
